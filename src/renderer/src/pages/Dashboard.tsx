@@ -46,10 +46,13 @@ export function Dashboard({
   }, [agents, query, statusFilter]);
 
   return (
-    <div className="flex-1 overflow-y-auto p-6">
-      <div className="mb-5">
-        <h1 className="text-lg font-semibold text-white/90">Agent Dashboard</h1>
-        <p className="text-xs text-white/30 mt-1">Monitor and manage your deployed AI agents</p>
+    <div className="flex-1 overflow-y-auto px-6 py-5">
+      {/* Page header */}
+      <div className="mb-5 animate-fade-in">
+        <div className="flex items-baseline gap-3">
+          <h1 className="text-[15px] font-bold text-white/90">Dashboard</h1>
+          <span className="text-[10px] font-mono text-white/15">{agents.length} agents deployed</span>
+        </div>
       </div>
 
       <SummaryCard agents={agents} onRestartAllOffline={onRestartAllOffline} />
@@ -64,20 +67,22 @@ export function Dashboard({
       />
 
       {filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center py-20 text-white/20">
-          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" className="mb-4 opacity-50">
-            <circle cx="24" cy="24" r="20" />
-            <path d="M17 17l14 14M31 17L17 31" strokeLinecap="round" />
-          </svg>
-          <p className="text-sm font-medium mb-1">No agents found</p>
-          <p className="text-xs text-white/15">
-            {query ? `No results for "${query}"` : 'No agents match the selected filter'}
+        <div className="flex flex-col items-center justify-center py-24 animate-fade-in">
+          <div className="w-10 h-10 rounded-full border border-white/[0.04] flex items-center justify-center mb-3">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="text-white/10">
+              <circle cx="7" cy="7" r="5" />
+              <path d="M11 11l3.5 3.5" strokeLinecap="round" />
+            </svg>
+          </div>
+          <p className="text-[13px] font-medium text-white/20 mb-0.5">No agents found</p>
+          <p className="text-[11px] text-white/10">
+            {query ? `No results for "${query}"` : 'No agents match this filter'}
           </p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-          {filtered.map((agent) => (
-            <AgentCard key={agent.id} agent={agent} onClick={() => onSelectAgent(agent)} />
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
+          {filtered.map((agent, i) => (
+            <AgentCard key={agent.id} agent={agent} onClick={() => onSelectAgent(agent)} index={i} />
           ))}
         </div>
       )}

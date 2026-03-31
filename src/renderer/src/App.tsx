@@ -58,7 +58,7 @@ function AppInner() {
   }, [selectedAgent, selectAgent]);
 
   return (
-    <div className="h-screen flex flex-col bg-[#0a0e17] text-white font-sans overflow-hidden">
+    <div className="h-screen flex flex-col bg-[#060a12] text-white font-sans overflow-hidden">
       <TopBar stats={stats} onSettingsClick={() => setPage(page === 'settings' ? 'dashboard' : 'settings')} />
       {page === 'dashboard' ? (
         <Dashboard

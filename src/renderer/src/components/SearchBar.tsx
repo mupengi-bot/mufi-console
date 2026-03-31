@@ -16,11 +16,11 @@ const filters: { label: string; value: AgentStatus | 'all' }[] = [
   { label: 'Offline', value: 'offline' },
 ];
 
-const filterColors: Record<string, string> = {
-  all: 'bg-[#00aaff]/10 text-[#00aaff] border-[#00aaff]/20',
-  online: 'bg-[#00ff88]/10 text-[#00ff88] border-[#00ff88]/20',
-  degraded: 'bg-yellow-400/10 text-yellow-400 border-yellow-400/20',
-  offline: 'bg-[#ff3355]/10 text-[#ff3355] border-[#ff3355]/20',
+const COLORS: Record<string, string> = {
+  all: '#00d4ff',
+  online: '#00e68a',
+  degraded: '#f59e0b',
+  offline: '#ff3355',
 };
 
 export function SearchBar({ query, onQueryChange, statusFilter, onStatusFilterChange, searchInputRef, agents }: SearchBarProps) {
@@ -30,10 +30,12 @@ export function SearchBar({ query, onQueryChange, statusFilter, onStatusFilterCh
     degraded: agents.filter((a) => a.status === 'degraded').length,
     offline: agents.filter((a) => a.status === 'offline').length,
   };
+
   return (
-    <div className="flex flex-col sm:flex-row gap-3 mb-5">
+    <div className="flex flex-col sm:flex-row gap-3 mb-5 animate-slide-up" style={{ animationDelay: '80ms' }}>
+      {/* Search input */}
       <div className="relative flex-1">
-        <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/20" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+        <svg className="absolute left-3 top-1/2 -translate-y-1/2 text-white/12" width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
           <circle cx="7" cy="7" r="5" />
           <path d="M11 11l3.5 3.5" />
         </svg>
@@ -41,24 +43,32 @@ export function SearchBar({ query, onQueryChange, statusFilter, onStatusFilterCh
           ref={searchInputRef}
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
-          placeholder="Search agents... (⌘K)"
-          className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-white/[0.03] border border-white/[0.08] text-sm text-white/80 placeholder-white/20 focus:outline-none focus:border-[#00aaff]/30 transition-colors"
+          placeholder="Search agents..."
+          className="w-full pl-9 pr-14 py-2 rounded-md bg-white/[0.02] border border-white/[0.04] text-[13px] text-white/80 placeholder-white/12 focus:outline-none focus:border-[#00d4ff]/20 focus:bg-white/[0.03] transition-all shadow-[inset_0_1px_2px_rgba(0,0,0,0.15)]"
         />
+        <kbd className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[9px] text-white/10 bg-white/[0.02] border border-white/[0.04] px-1.5 py-0.5 rounded font-mono hidden sm:block">⌘K</kbd>
       </div>
-      <div className="flex gap-2">
-        {filters.map((f) => (
-          <button
-            key={f.value}
-            onClick={() => onStatusFilterChange(f.value)}
-            className={`px-3 py-2 rounded-xl text-[11px] font-medium border transition-colors ${
-              statusFilter === f.value
-                ? filterColors[f.value]
-                : 'bg-white/[0.03] border-white/[0.06] text-white/30 hover:text-white/50 hover:border-white/10'
-            }`}
-          >
-            {f.label} ({counts[f.value]})
-          </button>
-        ))}
+
+      {/* Filter pills */}
+      <div className="flex gap-1">
+        {filters.map((f) => {
+          const active = statusFilter === f.value;
+          const c = COLORS[f.value];
+          return (
+            <button
+              key={f.value}
+              onClick={() => onStatusFilterChange(f.value)}
+              className="px-2.5 py-2 rounded-md text-[10px] font-mono font-semibold border transition-all"
+              style={{
+                backgroundColor: active ? `${c}0a` : 'rgba(255,255,255,0.015)',
+                borderColor: active ? `${c}20` : 'rgba(255,255,255,0.03)',
+                color: active ? c : 'rgba(255,255,255,0.2)',
+              }}
+            >
+              {f.label} <span className="opacity-50">{counts[f.value]}</span>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
