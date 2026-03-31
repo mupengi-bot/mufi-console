@@ -20,8 +20,8 @@ export function TokenBar({ used, limit, size = 'sm' }: TokenBarProps) {
       </div>
       {size === 'md' && (
         <div className="flex justify-between mt-1 text-xs text-white/40">
-          <span>{(used / 1000).toFixed(0)}k used</span>
-          <span>{(limit / 1000).toFixed(0)}k limit</span>
+          <span>{used.toLocaleString()} used</span>
+          <span>{limit.toLocaleString()} limit</span>
         </div>
       )}
     </div>

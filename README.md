@@ -2,14 +2,29 @@
 
 AI 에이전트 관리 네이티브 데스크톱 앱.
 
-## Tech Stack
-- Electron + React + TypeScript + Tailwind CSS
-- OpenClaw API 연동
-
-## Features (v1.0)
-- 에이전트 상태 실시간 모니터링
-- 토큰 사용량 / 자동 폴백
+## Features
+- 에이전트 상태 실시간 대시보드
+- 토큰 사용량 모니터링 + 서머리
+- 검색 + 상태별 필터
 - 세션 관리 (리셋/재시작/모델 교체)
+- 토스트 알림
+- 키보드 단축키 (⌘K 검색, ⌘, 설정, Esc 닫기)
 - 시스템 트레이 상주 + 알림
-- 고객사별 에이전트 관리
-- 보안 설정 (채널별 접근 제한)
+- 다크 글래스모피즘 UI
+
+## Tech Stack
+- Electron 33+ (macOS native)
+- React 19 + TypeScript
+- Tailwind CSS v4
+- Vite
+
+## Quick Start
+```bash
+npm install
+npm run dev
+```
+
+## Build
+```bash
+npm run package
+```

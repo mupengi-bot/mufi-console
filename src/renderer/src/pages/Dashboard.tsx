@@ -60,6 +60,7 @@ export function Dashboard({
         statusFilter={statusFilter}
         onStatusFilterChange={setStatusFilter}
         searchInputRef={searchInputRef}
+        agents={agents}
       />
 
       {filtered.length === 0 ? (

@@ -146,6 +146,14 @@ export function useAgents() {
     );
   }, []);
 
+  const restartAllOffline = useCallback(() => {
+    setAgents((prev) =>
+      prev.map((a) =>
+        a.status === 'offline' ? { ...a, status: 'online' as const, lastActive: 'just now' } : a
+      )
+    );
+  }, []);
+
   const stats = {
     total: agents.length,
     online: agents.filter((a) => a.status === 'online').length,
@@ -160,6 +168,7 @@ export function useAgents() {
     restartAgent,
     resetSession,
     switchModel,
+    restartAllOffline,
     stats,
   };
 }

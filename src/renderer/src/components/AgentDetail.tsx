@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Agent } from '../types/agent';
 import { TokenBar } from './TokenBar';
 
@@ -25,6 +26,13 @@ const statusConfig = {
 
 export function AgentDetail({ agent, onClose, onRestart, onResetSession, onSwitchModel }: AgentDetailProps) {
   const status = statusConfig[agent.status];
+  const [copied, setCopied] = useState(false);
+
+  const copyAgentId = () => {
+    navigator.clipboard.writeText(agent.id);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <>
@@ -32,7 +40,7 @@ export function AgentDetail({ agent, onClose, onRestart, onResetSession, onSwitc
       <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40" onClick={onClose} />
 
       {/* Panel */}
-      <div className="fixed right-0 top-0 bottom-0 w-[440px] z-50 bg-[#0d1220]/95 backdrop-blur-2xl border-l border-white/[0.06] shadow-2xl shadow-black/40 overflow-y-auto animate-slide-in">
+      <div className="fixed right-0 top-0 bottom-0 w-full md:w-[440px] z-50 bg-[#0d1220]/95 backdrop-blur-2xl border-l border-white/[0.06] shadow-2xl shadow-black/40 overflow-y-auto animate-slide-in">
         {/* Header */}
         <div className="sticky top-0 bg-[#0d1220]/90 backdrop-blur-xl border-b border-white/[0.06] p-5 z-10">
           <div className="flex items-center justify-between">
@@ -41,7 +49,16 @@ export function AgentDetail({ agent, onClose, onRestart, onResetSession, onSwitc
                 {agent.avatar}
               </div>
               <div>
-                <h2 className="text-base font-semibold text-white">{agent.name}</h2>
+                <div className="flex items-center gap-2">
+                  <h2 className="text-base font-semibold text-white">{agent.name}</h2>
+                  <button
+                    onClick={copyAgentId}
+                    className="px-1.5 py-0.5 rounded text-[9px] font-mono bg-white/5 border border-white/10 text-white/40 hover:text-white/70 hover:bg-white/10 transition-colors"
+                    title="Copy Agent ID"
+                  >
+                    {copied ? '✓ Copied' : 'ID'}
+                  </button>
+                </div>
                 <p className="text-xs text-white/40">{agent.client}</p>
               </div>
             </div>

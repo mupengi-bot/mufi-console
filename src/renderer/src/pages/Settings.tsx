@@ -39,10 +39,10 @@ export function Settings({ onBack }: SettingsProps) {
             </div>
             <div>
               <label className="block text-[11px] text-white/40 mb-1.5">Polling Interval</label>
-              <select className="w-full appearance-none bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white/80 focus:outline-none focus:border-[#00aaff]/30 transition-colors cursor-pointer">
+              <select defaultValue="30" className="w-full appearance-none bg-white/[0.03] border border-white/[0.08] rounded-xl px-4 py-2.5 text-sm text-white/80 focus:outline-none focus:border-[#00aaff]/30 transition-colors cursor-pointer">
                 <option value="5" className="bg-[#0d1220]">5 seconds</option>
                 <option value="10" className="bg-[#0d1220]">10 seconds</option>
-                <option value="30" className="bg-[#0d1220]" selected>30 seconds</option>
+                <option value="30" className="bg-[#0d1220]">30 seconds</option>
                 <option value="60" className="bg-[#0d1220]">60 seconds</option>
               </select>
             </div>

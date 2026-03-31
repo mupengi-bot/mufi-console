@@ -1,9 +1,23 @@
+import { useState, useEffect } from 'react';
+
 interface TopBarProps {
   stats: { total: number; online: number; degraded: number; offline: number };
   onSettingsClick: () => void;
 }
 
+function useLastSync() {
+  const [time, setTime] = useState(() => new Date().toLocaleTimeString('en-GB', { hour12: false }));
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTime(new Date().toLocaleTimeString('en-GB', { hour12: false }));
+    }, 30_000);
+    return () => clearInterval(id);
+  }, []);
+  return time;
+}
+
 export function TopBar({ stats, onSettingsClick }: TopBarProps) {
+  const lastSync = useLastSync();
   const systemStatus =
     stats.offline > 0 ? 'Issues Detected' : stats.degraded > 0 ? 'Degraded' : 'All Systems Normal';
   const statusColor =
@@ -64,6 +78,9 @@ export function TopBar({ stats, onSettingsClick }: TopBarProps) {
           <div className={`w-1.5 h-1.5 rounded-full ${statusDot} animate-pulse`} />
           <span className={`text-xs font-medium ${statusColor}`}>{systemStatus}</span>
         </div>
+
+        <div className="w-px h-4 bg-white/10" />
+        <span className="text-[10px] text-white/25 font-mono">Last sync: {lastSync}</span>
 
         <button
           onClick={onSettingsClick}

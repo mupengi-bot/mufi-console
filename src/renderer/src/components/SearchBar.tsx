@@ -1,4 +1,4 @@
-import { AgentStatus } from '../types/agent';
+import { Agent, AgentStatus } from '../types/agent';
 
 interface SearchBarProps {
   query: string;
@@ -6,6 +6,7 @@ interface SearchBarProps {
   statusFilter: AgentStatus | 'all';
   onStatusFilterChange: (f: AgentStatus | 'all') => void;
   searchInputRef: React.RefObject<HTMLInputElement | null>;
+  agents: Agent[];
 }
 
 const filters: { label: string; value: AgentStatus | 'all' }[] = [
@@ -22,7 +23,13 @@ const filterColors: Record<string, string> = {
   offline: 'bg-[#ff3355]/10 text-[#ff3355] border-[#ff3355]/20',
 };
 
-export function SearchBar({ query, onQueryChange, statusFilter, onStatusFilterChange, searchInputRef }: SearchBarProps) {
+export function SearchBar({ query, onQueryChange, statusFilter, onStatusFilterChange, searchInputRef, agents }: SearchBarProps) {
+  const counts: Record<string, number> = {
+    all: agents.length,
+    online: agents.filter((a) => a.status === 'online').length,
+    degraded: agents.filter((a) => a.status === 'degraded').length,
+    offline: agents.filter((a) => a.status === 'offline').length,
+  };
   return (
     <div className="flex flex-col sm:flex-row gap-3 mb-5">
       <div className="relative flex-1">
@@ -49,7 +56,7 @@ export function SearchBar({ query, onQueryChange, statusFilter, onStatusFilterCh
                 : 'bg-white/[0.03] border-white/[0.06] text-white/30 hover:text-white/50 hover:border-white/10'
             }`}
           >
-            {f.label}
+            {f.label} ({counts[f.value]})
           </button>
         ))}
       </div>
